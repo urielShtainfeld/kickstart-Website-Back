@@ -1,0 +1,4 @@
+
+mongodb://kickstart:kick123@ds247101.mlab.com:47101/uriel_kickstart
+
+mongo ds247101.mlab.com:47101/uriel_kickstart -u kickstart -p kick123
