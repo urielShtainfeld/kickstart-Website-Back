@@ -90,7 +90,7 @@ app.get('/project', (req, res) => {
 })
 
 app.post('/signIn',async (req, res) => {
-    User.authenticate(req.body.username, req.body.password, function (error, user) {
+    User.getAuthenticated(req.body.username, req.body.password, function (error, user) {
         if (error || !user) {
             var err = new Error('Wrong email or password.');
             err.message = 'Wrong email or password.';
@@ -98,7 +98,7 @@ app.post('/signIn',async (req, res) => {
             err.status = 401;
             return next(err);
         } else {
-            console.log('user SignIn called');
+            console.log('user SignIn succesfolly');
             return res.json({usertype: user.usertype});
         }
     })
