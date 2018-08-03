@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+
 var ProjectSchema =  {
     name: {
         type: String,
@@ -15,7 +16,5 @@ var ProjectSchema =  {
     owner: String
 }
 
-
-
 var Project =mongoose.model('Project',ProjectSchema);
-module.exports = {Project}
+module.exports = {Project};
