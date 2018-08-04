@@ -68,8 +68,9 @@ app.post('/project', async (req, res) => {
         var savedProject = await project.save();
 
         io.emit('project', req.body);
+        console.log(project.uniqueId);
+        return res.json(project);
 
-        res.sendStatus(200)
     } catch (error) {
         res.sendStatus(500)
         return console.error(error)
@@ -77,7 +78,28 @@ app.post('/project', async (req, res) => {
         console.log('project post called')
     }
 });
+app.post('/updateproject', async (req, res) => {
+    try {
+        // var project = new Project(req.body);
+        // project._id = '';
+        // console.log(project.toJSON());
+        console.log(req.body);
+        Project.findOneAndUpdate({ 'uniqueId': req.body.uniqueId}, req.body, {new: true}, function(err, project){
+            if (err) {
+                console.log(err);
+                return res.status(500).send({ error: err })
+            };
+            return res.status(200).send("succesfully saved");
+        });
 
+    } catch (error) {
+        res.sendStatus(500);
+        return console.error(error);
+    } finally {
+        console.log('project update called')
+        }
+    }
+);
 
 io.on('connection', (socket) => {
     console.log('a user connected')

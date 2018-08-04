@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
 
 var ProjectSchema =  {
-    name: {
+    uniqueId:{
         type: String,
         unique: true
     },
+    name: String,
     description: String,
     imagePath: String,
     daysLeft: String,
@@ -13,7 +14,12 @@ var ProjectSchema =  {
     moneyCollected: String,
     linkToExample: String,
     status: String,
-    owner: String
+    owner: String,
+    donations: [{
+        name: String,
+        amount: String
+    }]
+
 }
 
 var Project =mongoose.model('Project',ProjectSchema);
