@@ -15,12 +15,13 @@ var ProjectSchema =  {
     linkToExample: String,
     status: String,
     owner: String,
+    endDate: String,
+    videoPath: String,
     donations: [{
         name: String,
         amount: String
     }]
-
-}
+};
 
 var Project =mongoose.model('Project',ProjectSchema);
 module.exports = {Project};

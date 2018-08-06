@@ -107,8 +107,8 @@ io.on('connection', (socket) => {
 
 mongoose.connect(dbUrl, {useMongoClient: true}, (err) => {
     console.log('mongo db connection', err)
-})
+});
 
 var server = http.listen(3000, () => {
     console.log('server is listening on port', server.address().port)
-})
+});
