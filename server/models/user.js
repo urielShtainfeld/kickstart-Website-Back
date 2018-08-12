@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
-
+var CryptoJS = require("crypto-js");
+var secretKey = 'Sk3Yi60jyz';
 var UserSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -20,6 +21,7 @@ var UserSchema = new mongoose.Schema({
 
 //authenticate input against database
 UserSchema.statics.authenticate = function (userName, password, callback) {
+
     User.findOne({username: userName})
         .exec(function (err, user) {
             if (err) {
@@ -29,7 +31,7 @@ UserSchema.statics.authenticate = function (userName, password, callback) {
                 err.status = 401;
                 return callback(err);
             }
-            bcrypt.compare(password, user.password, function (err, result) {
+            bcrypt.compare(getPassword(password), user.password, function (err, result) {
                 if (result === true) {
                     return callback(null, user);
                 } else {
@@ -50,6 +52,13 @@ UserSchema.pre('save', function (next) {
         next();
     })
 });
+getPassword = function(password) {
+    console.log(password);
+    var bytes  = CryptoJS.AES.decrypt(password.toString(),secretKey);
+    var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
+    console.log(decryptedData);
+    return decryptedData;
+}
 var User = mongoose.model('User', UserSchema);
-module.exports = {User};
+module.exports = {User , getPassword: getPassword};

@@ -4,7 +4,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var mongoose = require('mongoose');
-var {User} = require('./models/user');
+var {User,getPassword} = require('./models/user');
 var {Project} = require('./models/project');
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
@@ -20,7 +20,7 @@ app.get('/project', (req, res) => {
 });
 
 app.post('/signIn',async (req, res) => {
-    User.authenticate(req.body.username, req.body.password, function (error, user) {
+    User.authenticate(req.body.username, req.headers.password, function (error, user) {
         if (error || !user) {
             var err = new Error('Wrong email or password.');
             err.message = 'Wrong email or password.';
@@ -35,12 +35,14 @@ app.post('/signIn',async (req, res) => {
 });
 
 app.post('/user', async (req, res) => {
+    var user = new User();
+        console.log('trying');
     if (req.body.username &&
-        req.body.password &&
+        req.headers.password &&
         req.body.usertype) {
         var userData = {
             username: req.body.username,
-            password: req.body.password,
+            password: getPassword(req.headers.password),
             usertype: req.body.usertype,
         };
 
